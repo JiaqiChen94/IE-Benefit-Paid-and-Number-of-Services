@@ -1,0 +1,153 @@
+import pandas as pd
+excel = pd.ExcelFile("Remote_Benefit_Paid.xlsx")
+df = pd.read_excel("Remote_Benefit_Paid.xlsx", sheet_name =excel.sheet_names[0] )
+in_out = df[df['Type'] == "In and Out of Hospital"]
+out = df[df['Type'] == "Out of Hospital"]
+
+print(in_out.shape)
+print(out.shape)
+
+df['Benefit Paid All Services'] - df['Benefit Paid Bulk Billed Services']
+df['Benefit Paid All Services'] / df['Number of All Services']
+df['Benefit Paid Bulk Billed Services'] / df['Number of Bulk Billed Services']
+
+# Another one
+excel = pd.ExcelFile("Remote_Bulk_Services.xlsx")
+df2 = pd.read_excel("Remote_Bulk_Services.xlsx", sheet_name = excel.sheet_names[0])
+df2 = df2.drop(['Mar Qtr 2019', 'Dec Qtr 2006', 'Sep Qtr 2006'], axis = 1)
+print(df2.shape)
+
+for i in range(0, df2.shape[1], 4):
+    print(i, "   ", i + 4)
+    
+
+column_list = []
+for i in range(0, df2.shape[1], 4):
+    first = df2.columns[i]
+    second = df2.columns[i + 1]
+    third = df2.columns[i + 2]
+    fourth = df2.columns[i + 3]
+    column_list.append([first, second, third, fourth])
+    
+print(column_list)
+
+# to track which season has the biggest services number
+# this is for All services : in and Out of Hospital
+all_service_in_and_out = []
+ite_n = 0
+
+for i in range(0, df2.shape[1], 4):
+    this_year = list(df2.loc[0][i : (i + 4)])
+    big_num = max(this_year)
+    index_n = this_year.index(big_num)
+    #print(big_num, "  ", index_n)
+    print(index_n)
+    print(column_list[ite_n][index_n])
+    print("======")
+    if index_n == 0:
+        big_season = "Summer"
+    elif index_n == 1:
+        big_season = "Spring"
+    elif index_n == 2:
+        big_season = "Winter"
+    elif index_n == 3:
+        big_season = "Autumn"
+    all_service_in_and_out.append(big_season)
+    ite_n += 1
+    
+
+
+
+# to track which season has the biggest services number
+# this is for All services : Out of Hospital
+all_service_out = []
+for i in range(0, df2.shape[1], 4):
+    this_year = list(df2.loc[1][i : (i + 4)])
+    big_num = max(this_year)
+    index_n = this_year.index(big_num)
+    #print(big_num, "  ", index_n)
+    if index_n == 0:
+        big_season = "Summer"
+    elif index_n == 1:
+        big_season = "Spring"
+    elif index_n == 2:
+        big_season = "Winter"
+    elif index_n == 3:
+        big_season = "Autumn"
+    all_service_out.append(big_season)
+print(all_service_out)
+
+
+# to track which season has the biggest services number
+# this is for Bulk Billed services : In and Out of Hospital
+bulk_service_in_and_out = []
+for i in range(0, df2.shape[1], 4):
+    this_year = list(df2.loc[2][i : (i + 4)])
+    #print(this_year)
+    big_num = max(this_year)
+    index_n = this_year.index(big_num)
+    #print(big_num, "  ", index_n)
+    if index_n == 0:
+        big_season = "Summer"
+    elif index_n == 1:
+        big_season = "Spring"
+    elif index_n == 2:
+        big_season = "Winter"
+    elif index_n == 3:
+        big_season = "Autumn"
+    bulk_service_in_and_out.append(big_season)
+print(bulk_service_in_and_out)
+
+
+# to track which season has the biggest services number
+# this is for Bulk Billed services : Out of Hospital
+bulk_service_out = []
+for i in range(0, df2.shape[1], 4):
+    this_year = list(df2.loc[3][i : (i + 4)])
+    #print(this_year)
+    big_num = max(this_year)
+    index_n = this_year.index(big_num)
+    #print(big_num, "  ", index_n)
+    if index_n == 0:
+        big_season = "Summer"
+    elif index_n == 1:
+        big_season = "Spring"
+    elif index_n == 2:
+        big_season = "Winter"
+    elif index_n == 3:
+        big_season = "Autumn"
+    bulk_service_out.append(big_season)
+print(bulk_service_out)
+
+
+# print(all_service_in_and_out)
+# print(all_service_out)
+
+for i in range(len(all_service_out)):
+    a = all_service_in_and_out[i]
+    b = all_service_out[i]
+    if a != b:
+        print("hahahaha", i)
+        
+        
+# print(bulk_service_in_and_out)
+# print(bulk_service_out)
+
+for i in range(len(bulk_service_out)):
+    a = bulk_service_in_and_out[i]
+    b = bulk_service_out[i]
+    if a != b:
+        print("hahaha", i)
+        
+        
+        
+# so we only pick up one for all service and bulk billed
+all_service_season = all_service_in_and_out
+bulk_bill_season = bulk_service_out
+
+print(all_service_season)
+print(bulk_bill_season)
+
+bulk_bill_season.count("Winter")
+bulk_bill_season.count("Summer")
+bulk_bill_season.count("Spring")
